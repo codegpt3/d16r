@@ -1,0 +1,54 @@
+version: "3.9"
+
+services:
+
+  dolphinscheduler-master:
+    container_name: dolphinscheduler-master-1
+    image: ${HUB}/dolphinscheduler-master:${TAG}
+    env_file: .env
+    healthcheck:
+      test: [ "CMD", "curl", "http://localhost:5679/actuator/health" ]
+      interval: 60s
+      timeout: 60s
+      retries: 3
+    volumes:
+      - ./master-conf:/opt/dolphinscheduler/conf
+      - dolphinscheduler-logs:/opt/dolphinscheduler/logs
+      - dolphinscheduler-shared-local:/opt/soft
+    network_mode: host
+    logging:
+      driver: json-file
+      options:
+        max-file: 2
+        max-size: 50m
+
+  dolphinscheduler-worker:
+    container_name: dolphinscheduler-worker-1
+    image: ${HUB}/dolphinscheduler-worker:${TAG}
+    env_file: .env
+    healthcheck:
+      test: [ "CMD", "curl", "http://localhost:1235/actuator/health" ]
+      interval: 60s
+      timeout: 60s
+      retries: 3
+
+    volumes:
+      - ./worker-conf:/opt/dolphinscheduler/conf
+      - dolphinscheduler-worker-data:/tmp/dolphinscheduler
+      - dolphinscheduler-logs:/opt/dolphinscheduler/logs
+      - dolphinscheduler-shared-local:/opt/soft
+      - dolphinscheduler-resource-local:/dolphinscheduler
+    network_mode: host
+    logging:
+      driver: json-file
+      options:
+        max-file: 2
+        max-size: 50m
+
+
+volumes:
+  dolphinscheduler-worker-data:
+  dolphinscheduler-zookeeper:
+  dolphinscheduler-logs:
+  dolphinscheduler-shared-local:
+  dolphinscheduler-resource-local:

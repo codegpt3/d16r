@@ -1,0 +1,149 @@
+version: "3.9"
+
+services:
+  dolphinscheduler-zookeeper:
+    container_name: dolphinscheduler-zookeeper
+    image: bitnami/zookeeper
+    env_file: .env
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+      - ZOO_4LW_COMMANDS_WHITELIST=srvr,ruok,wchs,cons
+      - ZOO_ENABLE_ADMIN_SERVER=false
+      - ZOO_ADMIN_SERVER_PORT_NUMBER=0
+    ports:
+      - "2181:2181"
+    volumes:
+      - dolphinscheduler-zookeeper:/bitnami/zookeeper
+    healthcheck:
+      test: ["CMD", "bash", "-c", "cat < /dev/null > /dev/tcp/127.0.0.1/2181"]
+      interval: 5s
+      timeout: 60s
+      retries: 120
+# 在 Linux 上，你可以使用 network_mode: host 来配置 Docker 容器
+#    network_mode: host
+    networks:
+      - dolphinscheduler
+    logging:
+      driver: json-file
+      options:
+        max-file: 2
+        max-size: 50m
+
+  dolphinscheduler-alert:
+    container_name: dolphinscheduler-alert
+    image: dolphinscheduler-alert-server:${TAG}
+    env_file: .env
+    ports:
+      - "50053:50053"
+      - "50052:50052"
+    healthcheck:
+      test: [ "CMD", "curl", "http://localhost:50053/actuator/health" ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    depends_on:
+      dolphinscheduler-zookeeper:
+        condition: service_healthy
+    volumes:
+      - ./alert-conf:/opt/dolphinscheduler/conf
+      - dolphinscheduler-logs:/opt/dolphinscheduler/logs
+#    network_mode: host
+    networks:
+      - dolphinscheduler
+    logging:
+      driver: json-file
+      options:
+        max-file: 2
+        max-size: 50m
+
+  dolphinscheduler-api:
+    container_name: dolphinscheduler-api
+    image: dolphinscheduler-api:${TAG}
+    env_file: .env
+    ports:
+      - "12345:12345"
+      - "25333:25333"
+    healthcheck:
+      test: [ "CMD", "curl", "http://localhost:12345/dolphinscheduler/actuator/health" ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    depends_on:
+      dolphinscheduler-zookeeper:
+        condition: service_healthy
+    volumes:
+      - ./api-conf:/opt/dolphinscheduler/conf
+      - dolphinscheduler-logs:/opt/dolphinscheduler/logs
+      - dolphinscheduler-resource-local:/dolphinscheduler
+      - dolphinscheduler-shared-local:/opt/soft
+#    network_mode: host
+    networks:
+      - dolphinscheduler
+    logging:
+      driver: json-file
+      options:
+        max-file: 2
+        max-size: 50m
+
+  dolphinscheduler-master:
+    container_name: dolphinscheduler-master-1
+    image: dolphinscheduler-master:${TAG}
+    env_file: .env
+    healthcheck:
+      test: [ "CMD", "curl", "http://localhost:5679/actuator/health" ]
+      interval: 60s
+      timeout: 60s
+      retries: 3
+    volumes:
+      - ./master-conf:/opt/dolphinscheduler/conf
+      - dolphinscheduler-logs:/opt/dolphinscheduler/logs
+      - dolphinscheduler-shared-local:/opt/soft
+#    network_mode: host
+    networks:
+      - dolphinscheduler
+    logging:
+      driver: json-file
+      options:
+        max-file: 2
+        max-size: 50m
+
+  dolphinscheduler-worker:
+    container_name: dolphinscheduler-worker-3
+    image: dolphinscheduler-worker:${TAG}
+    env_file: .env
+    ports:
+      - "1235:1235"
+    healthcheck:
+      test: [ "CMD", "curl", "http://localhost:1235/actuator/health" ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    depends_on:
+      dolphinscheduler-zookeeper:
+        condition: service_healthy
+    volumes:
+      - ./worker-conf:/opt/dolphinscheduler/conf
+      - dolphinscheduler-worker-data:/tmp/dolphinscheduler
+      - dolphinscheduler-logs:/opt/dolphinscheduler/logs
+      - dolphinscheduler-shared-local:/opt/soft
+      - dolphinscheduler-resource-local:/dolphinscheduler
+#    network_mode: host
+    networks:
+      - dolphinscheduler
+    logging:
+      driver: json-file
+      options:
+        max-file: 2
+        max-size: 50m
+
+# 创建一个dolphinscheduler 的网络
+networks:
+  dolphinscheduler:
+    external: true # 来自外部
+
+volumes:
+  dolphinscheduler-worker-data:
+  dolphinscheduler-zookeeper:
+  dolphinscheduler-logs:
+  dolphinscheduler-shared-local:
+  dolphinscheduler-resource-local:

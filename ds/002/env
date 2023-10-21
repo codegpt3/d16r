@@ -1,0 +1,17 @@
+# HUB=ghcr.io/apache/dolphinscheduler
+HUB=registry.cn-hangzhou.aliyuncs.com/bayer-di-pub
+TAG=latest
+
+TZ=Asia/Shanghai
+SPRING_JACKSON_TIME_ZONE=UTC
+
+DATABASE=mysql
+SPRING_DATASOURCE_URL=jdbc:mysql://101.34.233.54:3306/dolphinscheduler?useUnicode=true&useSSL=false
+SPRING_DATASOURCE_USERNAME=root
+SPRING_DATASOURCE_PASSWORD=chenxi1994
+
+# DATABASE=postgresql
+# SPRING_DATASOURCE_URL=jdbc:postgresql://dolphinscheduler-postgresql:5432/dolphinscheduler
+
+
+REGISTRY_ZOOKEEPER_CONNECT_STRING=127.0.0.1:2181

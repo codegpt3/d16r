@@ -1,0 +1,26 @@
+---
+name: DS
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: 设置环境
+        run: |
+          echo "${{ secrets.MY_SERVICE_KEY }}" > entry.key;
+          chmod 600 entry.key;
+      - name: 设置Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: 3.9.15
+      - name: 安装Fabric3
+        run: |
+          pip3 install fabric3==1.14.post1
+      - name: 部署
+        run: |
+          fab ds_001
+...
