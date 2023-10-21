@@ -5,7 +5,7 @@ target/
 !**/src/test/**/target/
 ## 加入暂存区的数据无法被排除
 ds/dockerfile/extend/
-ds/001/dockerfiles/mysql-connector-j-8.0.33.jar
+
 
 ### STS ###
 .apt_generated
