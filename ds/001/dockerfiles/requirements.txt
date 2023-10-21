@@ -1,0 +1,4 @@
+SQLAlchemy==2.0.21
+typing_extensions==4.8.0
+PyMySQL==1.1.0
+astral==3.2
