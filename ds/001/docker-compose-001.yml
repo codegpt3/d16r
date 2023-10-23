@@ -15,12 +15,12 @@ services:
     volumes:
       - dolphinscheduler-zookeeper:/bitnami/zookeeper
     healthcheck:
-      test: ["CMD", "bash", "-c", "cat < /dev/null > /dev/tcp/127.0.0.1/2181"]
+      test: [ "CMD", "bash", "-c", "cat < /dev/null > /dev/tcp/127.0.0.1/2181" ]
       interval: 5s
       timeout: 60s
       retries: 120
-# 在 Linux 上，你可以使用 network_mode: host 来配置 Docker 容器
-#    network_mode: host
+    # 在 Linux 上，你可以使用 network_mode: host 来配置 Docker 容器
+    #    network_mode: host
     networks:
       - dolphinscheduler
     logging:
@@ -47,7 +47,7 @@ services:
     volumes:
       - ./alert-conf:/opt/dolphinscheduler/conf
       - dolphinscheduler-logs:/opt/dolphinscheduler/logs
-#    network_mode: host
+    #    network_mode: host
     networks:
       - dolphinscheduler
     logging:
@@ -76,7 +76,7 @@ services:
       - dolphinscheduler-logs:/opt/dolphinscheduler/logs
       - dolphinscheduler-resource-local:/dolphinscheduler
       - dolphinscheduler-shared-local:/opt/soft
-#    network_mode: host
+    #    network_mode: host
     networks:
       - dolphinscheduler
     logging:
@@ -98,7 +98,7 @@ services:
       - ./master-conf:/opt/dolphinscheduler/conf
       - dolphinscheduler-logs:/opt/dolphinscheduler/logs
       - dolphinscheduler-shared-local:/opt/soft
-#    network_mode: host
+    #    network_mode: host
     networks:
       - dolphinscheduler
     logging:
@@ -121,13 +121,22 @@ services:
     depends_on:
       dolphinscheduler-zookeeper:
         condition: service_healthy
+    # ./worker-conf:/opt/dolphinscheduler/conf 卷映射用于配置文件，将主机上的配置文件映射到容器内，以供容器使用。
+    #dolphinscheduler-worker-data:/tmp/dolphinscheduler 卷映射用于数据持久化，将 Docker 卷映射到容器内，以便容器中的数据在容器的生命周期内得以保存。
+    #这两个卷映射具有不同的目的，一个是配置共享，另一个是数据持久化。根据您的应用需求，您可以选择使用不同的卷映射方式。
+    #您可以将 Docker 卷的名称视为一个键（key），用于在 Docker 中标识和查找特定的数据存储区域（值）。
+
+    #  这个名称允许您在 Docker Compose 文件或 Docker 命令中引用和操作特定的卷。类似于在 map 中使用键来查找对应的值。
+
+    #，了解 Docker 卷的概念和用途是有益的，但在日常开发中，主要集中精力在容器化开发和应用程序的构建、测试和部署上，
+    # 而不是直接访问 Docker 卷的数据。 Docker 卷通常由容器运行时自动管理，以确保数据的可靠性和持久性。 我们直接看容器信息
     volumes:
       - ./worker-conf:/opt/dolphinscheduler/conf
       - dolphinscheduler-worker-data:/tmp/dolphinscheduler
       - dolphinscheduler-logs:/opt/dolphinscheduler/logs
       - dolphinscheduler-shared-local:/opt/soft
       - dolphinscheduler-resource-local:/dolphinscheduler
-#    network_mode: host
+    #    network_mode: host
     networks:
       - dolphinscheduler
     logging:
@@ -141,6 +150,7 @@ networks:
   dolphinscheduler:
     external: true # 来自外部
 
+#定义了一组 Docker 卷（volumes）。这些卷允许在多个容器之间或与主机之间共享和持久化数据。
 volumes:
   dolphinscheduler-worker-data:
   dolphinscheduler-zookeeper:
