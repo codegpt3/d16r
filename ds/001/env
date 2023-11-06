@@ -13,5 +13,5 @@ SPRING_DATASOURCE_PASSWORD=chenxi1994
 # DATABASE=postgresql
 # SPRING_DATASOURCE_URL=jdbc:postgresql://dolphinscheduler-postgresql:5432/dolphinscheduler
 
-
+## 会根据docker容器自动寻找ip
 REGISTRY_ZOOKEEPER_CONNECT_STRING=dolphinscheduler-zookeeper:2181
