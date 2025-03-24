@@ -1,12 +1,8 @@
 version: "3.8"
 
 services:
-
   dolphinscheduler-zookeeper:
     image: bitnami/zookeeper:3.7.1
-    ports:
-      - "2181:2181"
-    profiles: ["all"]
     environment:
       ALLOW_ANONYMOUS_LOGIN: "yes"
       ZOO_4LW_COMMANDS_WHITELIST: srvr,ruok,wchs,cons
@@ -16,57 +12,63 @@ services:
       ZOO_SERVERS: zookeeper0:2888:3888,zookeeper1:2888:3888,zookeeper2:2888:3888
     volumes:
       - dolphinscheduler-zookeeper:/bitnami/zookeeper
-    healthcheck:
-      test: ["CMD", "bash", "-c", "cat < /dev/null > /dev/tcp/127.0.0.1/2181"]
-      interval: 5s
-      timeout: 60s
-      retries: 120
     extra_hosts:
-      - "zookeeper0:10.209.3.10"
-      - "zookeeper1:10.209.3.11"
-      - "zookeeper2:10.209.3.12"
+      - "zookeeper0:10.209.250.10"
+      - "zookeeper1:10.209.250.11"
+      - "zookeeper2:10.209.250.12"
+    network_mode: host
+
+  dolphinscheduler-api:
+    image: ${HUB}/dolphinscheduler-api:${TAG}
+    ports:
+      - "12345:12345"
+      - "25333:25333"
+    env_file: .env
+    depends_on:
+      - dolphinscheduler-zookeeper
+    volumes:
+      - dolphinscheduler-logs:/opt/dolphinscheduler/logs
+      - dolphinscheduler-shared-local:/opt/soft
+      - dolphinscheduler-resource-local:/dolphinscheduler
+    extra_hosts:
+      - "postgresql:10.209.250.10"
+      - "zookeeper0:10.209.250.10"
+      - "zookeeper1:10.209.250.11"
+      - "zookeeper2:10.209.250.12"
     networks:
       - dolphinscheduler
 
   dolphinscheduler-master:
     image: ${HUB}/dolphinscheduler-master:${TAG}
-    profiles: ["all"]
     env_file: .env
-    healthcheck:
-      test: [ "CMD", "curl", "http://localhost:5679/actuator/health" ]
-      interval: 30s
-      timeout: 5s
-      retries: 3
     depends_on:
-      dolphinscheduler-zookeeper:
-        condition: service_healthy
+      - dolphinscheduler-zookeeper
     volumes:
       - dolphinscheduler-logs:/opt/dolphinscheduler/logs
       - dolphinscheduler-shared-local:/opt/soft
     extra_hosts:
-      - "postgresql:10.209.3.10"
+      - "postgresql:10.209.250.10"
+      - "zookeeper0:10.209.250.10"
+      - "zookeeper1:10.209.250.11"
+      - "zookeeper2:10.209.250.12"
     networks:
       - dolphinscheduler
 
   dolphinscheduler-worker:
     image: ${HUB}/dolphinscheduler-worker:${TAG}
-    profiles: ["all"]
     env_file: .env
-    healthcheck:
-      test: [ "CMD", "curl", "http://localhost:1235/actuator/health" ]
-      interval: 30s
-      timeout: 5s
-      retries: 3
     depends_on:
-      dolphinscheduler-zookeeper:
-        condition: service_healthy
+      - dolphinscheduler-zookeeper
     volumes:
       - dolphinscheduler-worker-data:/tmp/dolphinscheduler
       - dolphinscheduler-logs:/opt/dolphinscheduler/logs
       - dolphinscheduler-shared-local:/opt/soft
       - dolphinscheduler-resource-local:/dolphinscheduler
     extra_hosts:
-      - "postgresql:10.209.3.10"
+      - "postgresql:10.209.250.10"
+      - "zookeeper0:10.209.250.10"
+      - "zookeeper1:10.209.250.11"
+      - "zookeeper2:10.209.250.12"
     networks:
       - dolphinscheduler
 
