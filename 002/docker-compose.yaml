@@ -20,9 +20,9 @@ services:
 
   dolphinscheduler-api:
     image: ${HUB}/apache/dolphinscheduler-api:${TAG}
-    ports:
-      - "12345:12345"
-      - "25333:25333"
+    # ports:
+    #   - "12345:12345"
+    #   - "25333:25333"
     env_file: .env
     depends_on:
       - dolphinscheduler-zookeeper
@@ -35,8 +35,8 @@ services:
       - "zookeeper0:10.209.250.10"
       - "zookeeper1:10.209.250.11"
       - "zookeeper2:10.209.250.12"
-    networks:
-      - dolphinscheduler
+    network_mode: host
+    hostname: zookeeper1
 
   dolphinscheduler-master:
     image: ${HUB}/apache/dolphinscheduler-master:${TAG}
@@ -51,8 +51,8 @@ services:
       - "zookeeper0:10.209.250.10"
       - "zookeeper1:10.209.250.11"
       - "zookeeper2:10.209.250.12"
-    networks:
-      - dolphinscheduler
+    network_mode: host
+    hostname: zookeeper1
 
   dolphinscheduler-worker:
     image: ${HUB}/apache/dolphinscheduler-worker:${TAG}
@@ -69,8 +69,8 @@ services:
       - "zookeeper0:10.209.250.10"
       - "zookeeper1:10.209.250.11"
       - "zookeeper2:10.209.250.12"
-    networks:
-      - dolphinscheduler
+    network_mode: host
+    hostname: zookeeper1
 
 networks:
   dolphinscheduler:
