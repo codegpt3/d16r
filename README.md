@@ -1,11 +1,5 @@
-# dolphinscheduler
-- doc: https://dolphinscheduler.apache.org/zh-cn/docs/3.1.8/guide/start/quick-start
 ## version
-- 3.1.8
-## dolphinscheduler
-- local
-- dev
-- main
+- 3.2.2
   
 001 api + alert-server + zk + worker + master
 
@@ -30,12 +24,22 @@ api
 12345
 25333
 25334
+
 ## 搭建流程
-- build各个镜像
-如docker build -t dolphinscheduler-worker:latest .
-  <img width="747" alt="image" src="https://github.com/cxjwbj/dolphinscheduler/assets/50309507/e89c6a69-81d0-4096-ab5a-0aed97be1666">
-- docker-compose -f docker-compose-001.yml up -d  
-- docker-compose -f docker-compose-001.yml down 
+docker tag apache/dolphinscheduler-tools:3.2.2 ocr.private.io:7233/apache/dolphinscheduler-tools:3.2.2
+docker tag apache/dolphinscheduler-master:3.2.2 ocr.private.io:7233/apache/dolphinscheduler-master:3.2.2
+docker tag apache/dolphinscheduler-worker:3.2.2 ocr.private.io:7233/apache/dolphinscheduler-worker:3.2.2
+docker tag apache/dolphinscheduler-api:3.2.2 ocr.private.io:7233/apache/dolphinscheduler-api:3.2.2
+docker tag apache/dolphinscheduler-alert-server:3.2.2 ocr.private.io:7233/apache/dolphinscheduler-alert-server:3.2.2
+docker tag bitnami/zookeeper:3.7.1 ocr.private.io:7233/bitnami/zookeeper:3.7.1
+docker tag bitnami/postgresql:15.2.0 ocr.private.io:7233/bitnami/postgresql:15.2.0
+docker push ocr.private.io:7233/apache/dolphinscheduler-tools:3.2.2
+docker push ocr.private.io:7233/apache/dolphinscheduler-master:3.2.2
+docker push ocr.private.io:7233/apache/dolphinscheduler-worker:3.2.2
+docker push ocr.private.io:7233/apache/dolphinscheduler-api:3.2.2
+docker push ocr.private.io:7233/apache/dolphinscheduler-alert-server:3.2.2
+docker push ocr.private.io:7233/bitnami/zookeeper:3.7.1
+docker push ocr.private.io:7233/bitnami/postgresql:15.2.0
 
 
 ## 启动链接
