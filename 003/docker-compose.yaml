@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   dolphinscheduler-zookeeper:
-    image: bitnami/zookeeper:3.7.1
+    image: ${HUB}/bitnami/zookeeper:3.7.1
     environment:
       ALLOW_ANONYMOUS_LOGIN: "yes"
       ZOO_4LW_COMMANDS_WHITELIST: srvr,ruok,wchs,cons
@@ -19,7 +19,7 @@ services:
     network_mode: host
 
   dolphinscheduler-api:
-    image: ${HUB}/dolphinscheduler-api:${TAG}
+    image: ${HUB}/apache/dolphinscheduler-api:${TAG}
     ports:
       - "12345:12345"
       - "25333:25333"
@@ -39,7 +39,7 @@ services:
       - dolphinscheduler
 
   dolphinscheduler-master:
-    image: ${HUB}/dolphinscheduler-master:${TAG}
+    image: ${HUB}/apache/dolphinscheduler-master:${TAG}
     env_file: .env
     depends_on:
       - dolphinscheduler-zookeeper
@@ -55,7 +55,7 @@ services:
       - dolphinscheduler
 
   dolphinscheduler-worker:
-    image: ${HUB}/dolphinscheduler-worker:${TAG}
+    image: ${HUB}/apache/dolphinscheduler-worker:${TAG}
     env_file: .env
     depends_on:
       - dolphinscheduler-zookeeper

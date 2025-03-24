@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   dolphinscheduler-postgresql:
-    image: bitnami/postgresql:15.2.0
+    image: ${HUB}/bitnami/postgresql:15.2.0
     ports:
       - "5432:5432"
     environment:
@@ -15,7 +15,7 @@ services:
       - dolphinscheduler
 
   dolphinscheduler-zookeeper:
-    image: bitnami/zookeeper:3.7.1
+    image: ${HUB}/bitnami/zookeeper:3.7.1
     environment:
       ALLOW_ANONYMOUS_LOGIN: "yes"
       ZOO_4LW_COMMANDS_WHITELIST: srvr,ruok,wchs,cons
@@ -32,7 +32,7 @@ services:
     network_mode: host
 
   dolphinscheduler-schema-initializer:
-    image: ${HUB}/dolphinscheduler-tools:${TAG}
+    image: ${HUB}/apache/dolphinscheduler-tools:${TAG}
     env_file: .env
     command: [ tools/bin/upgrade-schema.sh ]
     depends_on:
@@ -47,7 +47,7 @@ services:
       - dolphinscheduler
 
   dolphinscheduler-api:
-    image: ${HUB}/dolphinscheduler-api:${TAG}
+    image: ${HUB}/apache/dolphinscheduler-api:${TAG}
     ports:
       - "12345:12345"
       - "25333:25333"
@@ -67,7 +67,7 @@ services:
       - dolphinscheduler
 
   dolphinscheduler-alert:
-    image: ${HUB}/dolphinscheduler-alert-server:${TAG}
+    image: ${HUB}/apache/dolphinscheduler-alert-server:${TAG}
     env_file: .env
     depends_on:
       - dolphinscheduler-zookeeper
@@ -82,7 +82,7 @@ services:
       - dolphinscheduler
 
   dolphinscheduler-master:
-    image: ${HUB}/dolphinscheduler-master:${TAG}
+    image: ${HUB}/apache/dolphinscheduler-master:${TAG}
     env_file: .env
     depends_on:
       - dolphinscheduler-zookeeper
@@ -98,7 +98,7 @@ services:
       - dolphinscheduler
 
   dolphinscheduler-worker:
-    image: ${HUB}/dolphinscheduler-worker:${TAG}
+    image: ${HUB}/apache/dolphinscheduler-worker:${TAG}
     env_file: .env
     depends_on:
       - dolphinscheduler-zookeeper
