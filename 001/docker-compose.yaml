@@ -62,6 +62,13 @@ services:
       - "zookeeper0:10.209.250.10"
       - "zookeeper1:10.209.250.11"
       - "zookeeper2:10.209.250.12"
+      - "bigdata-vm-1739442504-kfoq9:10.209.250.113"
+      - "bigdata-vm-1739442504-kfoq9-0001:10.209.250.115"
+      - "bigdata-vm-1739442504-kfoq9-0002:10.209.250.116"
+      - "bigdata-vm-1739442504-0071g:10.209.250.117"
+      - "bigdata-vm-1739442504-0071g-0001:10.209.250.118"
+      - "bigdata-vm-1739442504-0071g-0002:10.209.250.119"
+
     network_mode: host
     hostname: zookeeper0
 
@@ -77,6 +84,12 @@ services:
       - "zookeeper0:10.209.250.10"
       - "zookeeper1:10.209.250.11"
       - "zookeeper2:10.209.250.12"
+      - "bigdata-vm-1739442504-kfoq9:10.209.250.113"
+      - "bigdata-vm-1739442504-kfoq9-0001:10.209.250.115"
+      - "bigdata-vm-1739442504-kfoq9-0002:10.209.250.116"
+      - "bigdata-vm-1739442504-0071g:10.209.250.117"
+      - "bigdata-vm-1739442504-0071g-0001:10.209.250.118"
+      - "bigdata-vm-1739442504-0071g-0002:10.209.250.119"
     network_mode: host
     hostname: zookeeper0
 
@@ -93,6 +106,12 @@ services:
       - "zookeeper0:10.209.250.10"
       - "zookeeper1:10.209.250.11"
       - "zookeeper2:10.209.250.12"
+      - "bigdata-vm-1739442504-kfoq9:10.209.250.113"
+      - "bigdata-vm-1739442504-kfoq9-0001:10.209.250.115"
+      - "bigdata-vm-1739442504-kfoq9-0002:10.209.250.116"
+      - "bigdata-vm-1739442504-0071g:10.209.250.117"
+      - "bigdata-vm-1739442504-0071g-0001:10.209.250.118"
+      - "bigdata-vm-1739442504-0071g-0002:10.209.250.119"
     network_mode: host
     hostname: zookeeper0
 
@@ -111,6 +130,12 @@ services:
       - "zookeeper0:10.209.250.10"
       - "zookeeper1:10.209.250.11"
       - "zookeeper2:10.209.250.12"
+      - "bigdata-vm-1739442504-kfoq9:10.209.250.113"
+      - "bigdata-vm-1739442504-kfoq9-0001:10.209.250.115"
+      - "bigdata-vm-1739442504-kfoq9-0002:10.209.250.116"
+      - "bigdata-vm-1739442504-0071g:10.209.250.117"
+      - "bigdata-vm-1739442504-0071g-0001:10.209.250.118"
+      - "bigdata-vm-1739442504-0071g-0002:10.209.250.119"
     network_mode: host
     hostname: zookeeper0
 
