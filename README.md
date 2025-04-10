@@ -59,6 +59,8 @@ docker cp apache-seatunnel-2.3.9-bin.tar.gz 002_dolphinscheduler-worker_1:/opt/s
 docker cp apache-seatunnel-2.3.9-bin.tar.gz 003_dolphinscheduler-worker_1:/opt/soft/ && docker exec -it 003_dolphinscheduler-worker_1 bash -c "mkdir -p /opt/soft/seatunnel && tar -zxvf /opt/soft/apache-seatunnel-2.3.9-bin.tar.gz --strip-components 1 -C /opt/soft/seatunnel"
 cat plugin-mapping.properties |awk -F '=' '{print $2}'|uniq|grep -v '^$'|xargs -i curl -LO https://maven.aliyun.com/repository/central/org/apache/seatunnel/{}/2.3.9/{}-2.3.9.jar
 
+# https://repo1.maven.org/maven2/com/mysql/mysql-connector-j/8.0.33/mysql-connector-j-8.0.33.jar
+curl -LO https://maven.aliyun.com/repository/central/com/mysql/mysql-connector-j/8.0.33/mysql-connector-j-8.0.33.jar
 环境变量-新建
 export SEATUNNEL_HOME=/opt/soft/seatunnel
 export JAVA_HOME=/opt/java/openjdk

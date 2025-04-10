@@ -30,6 +30,7 @@ services:
       - dolphinscheduler-logs:/opt/dolphinscheduler/logs
       - dolphinscheduler-shared-local:/opt/soft
       - dolphinscheduler-resource-local:/dolphinscheduler
+      - mysql-connector-j-8.0.33.jar:/opt/dolphinscheduler/libs/mysql-connector-j-8.0.33.jar
     extra_hosts:
       - "postgresql:10.209.250.10"
       - "zookeeper0:10.209.250.10"
@@ -60,6 +61,7 @@ services:
     volumes:
       - dolphinscheduler-logs:/opt/dolphinscheduler/logs
       - dolphinscheduler-shared-local:/opt/soft
+      - mysql-connector-j-8.0.33.jar:/opt/dolphinscheduler/libs/mysql-connector-j-8.0.33.jar
     extra_hosts:
       - "postgresql:10.209.250.10"
       - "zookeeper0:10.209.250.10"
@@ -92,6 +94,7 @@ services:
       - dolphinscheduler-logs:/opt/dolphinscheduler/logs
       - dolphinscheduler-shared-local:/opt/soft
       - dolphinscheduler-resource-local:/dolphinscheduler
+      - mysql-connector-j-8.0.33.jar:/opt/dolphinscheduler/libs/mysql-connector-j-8.0.33.jar
     extra_hosts:
       - "postgresql:10.209.250.10"
       - "zookeeper0:10.209.250.10"
